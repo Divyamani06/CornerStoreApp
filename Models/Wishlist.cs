@@ -2,11 +2,9 @@
 
 namespace CornerStore.API.Model
 {
-    public class Cart
+    public class Wishlist
     {
-        [Key]
-        public Guid CartId { get; set; }
-        public int Quantity { get; set; }
+        public Guid Id { get; set; }
 
         public Guid CustomerId { get; set; }
         public virtual Customer? Customer { get; set; }

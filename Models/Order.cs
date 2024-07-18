@@ -4,8 +4,7 @@ namespace CornerStore.API.Model
 {
     public class Order
     {
-        [Key]
-        public Guid OrderId { get; set; }
+        public Guid Id { get; set; }
         public DateTime OrderDate { get; set; }
         public decimal TotalPrice { get; set; }
 
