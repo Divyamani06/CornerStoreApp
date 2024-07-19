@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using CornerStore.API.Dtos.RequestDtos;
-using CornerStore.API.Dtos.ResponseDtos;
-using CornerStore.API.Model;
 using CornerStore.API.Services.IServices;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CornerStore.API.Controllers
@@ -47,6 +44,10 @@ namespace CornerStore.API.Controllers
         public async Task<IActionResult> CreateProduct(ProductRequestDto product)
         {
             var result =await _productService.CreateProduct(product);
+            if (result == null)
+            {
+                return BadRequest();
+            }
             return Ok(result);
         }
 

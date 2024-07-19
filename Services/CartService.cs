@@ -2,7 +2,6 @@
 using CornerStore.API.Dtos.RequestDtos;
 using CornerStore.API.Dtos.ResponseDtos;
 using CornerStore.API.Model;
-using CornerStore.API.Repositories;
 using CornerStore.API.Repositories.IRepositories;
 using CornerStore.API.Services.IServices;
 

@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using CornerStore.API.Dtos.RequestDtos;
-using CornerStore.API.Dtos.ResponseDtos;
-using CornerStore.API.Model;
 using CornerStore.API.Services.IServices;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CornerStore.API.Controllers
