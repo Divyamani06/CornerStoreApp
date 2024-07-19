@@ -65,7 +65,7 @@ namespace CornerStore.API.Services
             return result.Id;
         }
 
-        public async Task<string> SignIn(string email, string password)
+        public async Task<bool> SignIn(string email, string password)
         {
             return await _customerRepository.SignIn(email, password);
         }

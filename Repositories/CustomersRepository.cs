@@ -16,16 +16,16 @@ namespace CornerStore.API.Repositories
         }
 
 
-        public async Task<string> SignIn(string email, string password)
+        public async Task<bool> SignIn(string email, string password)
         {
             var passwordEncrypt = EncryptPassword(password!);
 
             var signup = await _context.Customers.FirstOrDefaultAsync(x=>x.Email==email&&x.Password==passwordEncrypt);
             if(signup == null)
             {
-                return "customer is not found";
+                return false;
             }
-            return "customer login successfully";
+            return true;
             
         }
     }

@@ -10,7 +10,7 @@ namespace CornerStore.API.Services.IServices
         Task<Guid> DeteleCustomer(Guid id);
         Task<List<CustomerResponseDto>> GetAllCustomer();
         Task<CustomerResponseDto> GetByIdCustomer(Guid id);
-        Task<string> SignIn(string email, string password);
+        Task<bool> SignIn(string email, string password);
         Task<CustomerResponseDto> UpdateCustomer(Guid id, CustomerRequestDto customerRequestDto);
     }
 }

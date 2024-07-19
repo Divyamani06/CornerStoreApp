@@ -70,11 +70,11 @@ namespace CornerStore.API.Controllers
         public async Task<IActionResult> SignIn(string email, string password)
         {
             var result = await _customerService.SignIn(email, password);
-            if(result == "customer is not found")
+            if(result == false)
             {
-                return BadRequest(result);
+                return NotFound("Customer not found");
             }
-            return Ok(result);
+            return Ok("Customer sigin succesfully");
         }
     }
 }

@@ -47,6 +47,10 @@ namespace CornerStore.API.Controllers
         public async Task<IActionResult> CreatCart(CartRequestDto cart)
         {
             var cartDetails = await _cartService.CreatCart(cart);
+            if(cartDetails == null)
+            {
+                return BadRequest();
+            }
             return Ok(cartDetails);
         }
 
