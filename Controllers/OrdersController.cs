@@ -1,6 +1,5 @@
-﻿using CornerStore.API.Model;
+﻿using CornerStore.API.Dtos.RequestDtos;
 using CornerStore.API.Services.IServices;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CornerStore.API.Controllers
@@ -20,7 +19,10 @@ namespace CornerStore.API.Controllers
         public async Task<IActionResult> GetAllOrder()
         {
             var result = await _orderService.GetAllOrders();
-            if (result == null) { return NotFound(); }
+            if (result == null) 
+            {
+                return NotFound(); 
+            }
             return Ok(result);
         }
 
@@ -34,16 +36,16 @@ namespace CornerStore.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder(Order order)
+        public async Task<IActionResult> CreateOrder(OrderRequestDto order)
         {
             var result = await _orderService.CreateOrder(order);
             return Ok(result);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateOrder(Guid id,Order order)
+        public async Task<IActionResult> UpdateOrder(Guid id, OrderRequestDto order)
         {
-            if(id != order.Id)
+            if(id == null)
             {
                 return BadRequest();
             }

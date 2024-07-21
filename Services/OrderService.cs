@@ -1,4 +1,7 @@
-﻿using CornerStore.API.Model;
+﻿using AutoMapper;
+using CornerStore.API.Dtos.RequestDtos;
+using CornerStore.API.Dtos.ResponseDtos;
+using CornerStore.API.Model;
 using CornerStore.API.Repositories.IRepositories;
 using CornerStore.API.Services.IServices;
 
@@ -7,55 +10,61 @@ namespace CornerStore.API.Services
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository)
+        public OrderService(IOrderRepository orderRepository,IMapper mapper)
         {
             _orderRepository = orderRepository;
+            _mapper = mapper;
         }
 
-        public async Task<Order> CreateOrder(Order order)
+        public async Task<OrderResponseDto> CreateOrder(OrderRequestDto order)
         {
-            var orderDetails = new Order
+            var orderDetails = new OrderRequestDto
             {
-                Id = order.Id,
                 OrderDate = DateTime.Now,
                 TotalPrice = order.TotalPrice,
+                CustomerId = order.CustomerId,
+                ShipmentId = order.ShipmentId,
 
             };
-            await _orderRepository.CreateOrder(orderDetails);
-            return orderDetails;
+            var response = _mapper.Map<Order>(orderDetails);
+            var result = await _orderRepository.AddAsync(response);
+            return _mapper.Map<OrderResponseDto>(result);
         }
 
-        public async Task<IEnumerable<Order>> GetAllOrders()
+        public async Task<List<OrderResponseDto>> GetAllOrders()
         {
-            var orderDetails = await _orderRepository.GetAllOrders();
-            return orderDetails.Select(x => new Order
+            var orderDetails = await _orderRepository.GetAll();
+            var result = _mapper.Map<Order>(orderDetails);
+            return _mapper.Map<List<OrderResponseDto>>(result);
+
+        }
+
+        public async Task<OrderResponseDto> GetOrderById(Guid id)
+        {
+            var orderDetials = await _orderRepository.GetById(id);
+            var result = _mapper.Map<Order>(orderDetials);
+            return _mapper.Map<OrderResponseDto>(result);
+        }
+
+        public async Task<OrderResponseDto> UpdateOrder(Guid id, OrderRequestDto order)
+        {
+            var existingOrder = await _orderRepository.GetById(id);
+            var details = new OrderRequestDto
             {
-                Id = x.Id,
-                OrderDate = DateTime.Now,
-                TotalPrice = x.TotalPrice,
-                CustomerId = x.CustomerId,
-            });
-
-        }
-
-        public async Task<Order> GetOrderById(Guid id)
-        {
-            var orderDetials = await _orderRepository.GetOrderBtId(id);
-            return new Order { Id = orderDetials.Id, OrderDate = DateTime.Now, TotalPrice = orderDetials.TotalPrice, };
-        }
-
-        public async Task UpdateOrder(Guid id, Order order)
-        {
-            var existingOrder = await _orderRepository.GetOrderBtId(id);
-            existingOrder.TotalPrice = order.TotalPrice;
-            existingOrder.OrderDate = DateTime.Now;
-            await _orderRepository.UpdateOrder(existingOrder);
+                OrderDate = order.OrderDate,
+                ShipmentId = order.ShipmentId,
+                CustomerId = existingOrder.CustomerId,
+            };
+            var response = _mapper.Map<Order>(details);
+            var result = await _orderRepository.Update(response);
+            return _mapper.Map<OrderResponseDto>(result);
         }
 
         public async Task DeleteOrder(Guid id)
         {
-            await _orderRepository.DeleteOrder(id);
+            await _orderRepository.Delete(id);
         }
     }
 }

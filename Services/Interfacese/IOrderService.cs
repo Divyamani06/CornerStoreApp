@@ -1,13 +1,15 @@
-﻿using CornerStore.API.Model;
+﻿using CornerStore.API.Dtos.RequestDtos;
+using CornerStore.API.Dtos.ResponseDtos;
+using CornerStore.API.Model;
 
 namespace CornerStore.API.Services.IServices
 {
     public interface IOrderService
     {
-        Task<Order> CreateOrder(Order order);
+        Task<OrderResponseDto> CreateOrder(OrderRequestDto order);
         Task DeleteOrder(Guid id);
-        Task<IEnumerable<Order>> GetAllOrders();
-        Task<Order> GetOrderById(Guid id);
-        Task UpdateOrder(Guid id, Order order);
+        Task<List<OrderResponseDto>> GetAllOrders();
+        Task<OrderResponseDto> GetOrderById(Guid id);
+        Task<OrderResponseDto> UpdateOrder(Guid id, OrderRequestDto order);
     }
 }

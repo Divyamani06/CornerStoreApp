@@ -4,6 +4,7 @@ using CornerStore.API.Dtos.ResponseDtos;
 using CornerStore.API.Model;
 using CornerStore.API.Repositories.IRepositories;
 using CornerStore.API.Services.IServices;
+using FakeItEasy;
 
 namespace CornerStore.API.Services
 {
@@ -24,13 +25,16 @@ namespace CornerStore.API.Services
 
         public async Task<CartResponseDto> CreatCart(CartRequestDto cartDto)
         {
-            var cusId = _customersRepository.GetAll().Result.First().Id;
-            var proId = _productRepository.GetAll().Result.First().Id;
+            var getStock = _productRepository.GetById(cartDto.ProductId);
+            if (cartDto.Quantity > getStock.Result.Stock)
+            {
+               throw new("The quantity requested for Product is out of stock.");
+            }
             var detail = new CartRequestDto
             {
-                CustomerId = cusId,
+                CustomerId = cartDto.CustomerId,
                 Quantity = cartDto.Quantity,
-                ProductId = proId
+                ProductId = cartDto.ProductId
             };
             var cart = _mapper.Map<Cart>(detail);
             var response = await _cartRepository.AddAsync(cart);
@@ -41,9 +45,6 @@ namespace CornerStore.API.Services
         public async Task<List<CartResponseDto>> GetAllCart()
         {
             var details = await _cartRepository.GetAll();
-            var getid =details.First().Id;
-            var customerId = await _cartRepository.GetCartByCustomer(getid);
-           
             var result = _mapper.Map<List<Cart>>(details);
             return _mapper.Map<List<CartResponseDto>>(result);
         }
@@ -64,7 +65,7 @@ namespace CornerStore.API.Services
                 Quantity = existingCart.Quantity,
             };
             var response = _mapper.Map<Cart>(detail);
-            var result = await _cartRepository.Update(existingCart);
+            var result = await _cartRepository.Update(response);
             return _mapper.Map<CartResponseDto>(result);
         }
 

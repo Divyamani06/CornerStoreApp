@@ -54,7 +54,7 @@ namespace CornerStore.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(Guid id, ProductRequestDto product)
         {
-            if (id != product.Id)
+            if (id  == null)
             {
                 return BadRequest();
             }

@@ -1,13 +1,15 @@
-﻿using CornerStore.API.Model;
+﻿using CornerStore.API.Dtos.RequestDtos;
+using CornerStore.API.Dtos.ResponseDtos;
+using CornerStore.API.Model;
 
 namespace CornerStore.API.Services.IServices
 {
     public interface IShipmentService
     {
-        Task<Shipment> CreateShipment(Shipment shipment);
+        Task<ShipmentResponseDto> CreateShipment(ShipmentRequestDto shipment);
         Task DeleteShipment(Guid id);
-        Task<IEnumerable<Shipment>> GetAllShipments();
-        Task<Shipment> GetShipmentById(Guid id);
-        Task<Shipment> UpdateShipment(Guid id, Shipment shipment);
+        Task<List<ShipmentResponseDto>> GetAllShipments();
+        Task<ShipmentResponseDto> GetShipmentById(Guid id);
+        Task<ShipmentResponseDto> UpdateShipment(Guid id, ShipmentRequestDto shipment);
     }
 }

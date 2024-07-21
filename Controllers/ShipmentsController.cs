@@ -1,6 +1,5 @@
-﻿using CornerStore.API.Model;
+﻿using CornerStore.API.Dtos.RequestDtos;
 using CornerStore.API.Services.IServices;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CornerStore.API.Controllers
@@ -37,16 +36,16 @@ namespace CornerStore.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateShipment(Shipment shipment)
+        public async Task<IActionResult> CreateShipment(ShipmentRequestDto shipment)
         {
             var result = await _shipmentService.CreateShipment(shipment);
             return Ok(result);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateShipment(Guid id, Shipment shipment)
+        public async Task<IActionResult> UpdateShipment(Guid id, ShipmentRequestDto shipment)
         {
-            if (id != shipment.Id)
+            if (id == null)
             {
                 return BadRequest();
             }

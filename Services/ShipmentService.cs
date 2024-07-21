@@ -1,4 +1,7 @@
-﻿using CornerStore.API.Model;
+﻿using AutoMapper;
+using CornerStore.API.Dtos.RequestDtos;
+using CornerStore.API.Dtos.ResponseDtos;
+using CornerStore.API.Model;
 using CornerStore.API.Repositories.IRepositories;
 using CornerStore.API.Services.IServices;
 
@@ -7,72 +10,66 @@ namespace CornerStore.API.Services
     public class ShipmentService : IShipmentService
     {
         private readonly IShipmentRepository _shipmentRepository;
+        private readonly IMapper _mapper;
 
-        public ShipmentService(IShipmentRepository shipmentRepository)
+        public ShipmentService(IShipmentRepository shipmentRepository,IMapper mapper)
         {
             _shipmentRepository = shipmentRepository;
+            _mapper = mapper;
         }
 
-        public async Task<Shipment> CreateShipment(Shipment shipment)
+        public async Task<ShipmentResponseDto> CreateShipment(ShipmentRequestDto shipment)
         {
-            var shipmentDetails = new Shipment
+            var details = new ShipmentRequestDto
             {
-                Id = shipment.Id,
                 ShipmentDate = shipment.ShipmentDate,
                 State = shipment.State,
-                City = shipment.City,
-                ZipCode = shipment.ZipCode,
                 Address = shipment.Address,
+                City = shipment.City,
                 Country = shipment.Country,
+                CustomerId = shipment.CustomerId,
+                ZipCode = shipment.ZipCode,
             };
-            await _shipmentRepository.CreateShipment(shipmentDetails);
-            return shipment;
+            var response = _mapper.Map<Shipment>(details);
+            var result = await _shipmentRepository.AddAsync(response);
+            return _mapper.Map<ShipmentResponseDto>(result);
         }
 
-        public async Task<IEnumerable<Shipment>> GetAllShipments()
+        public async Task<List<ShipmentResponseDto>> GetAllShipments()
         {
-            var details = await _shipmentRepository.GetAllShipments();
-            return details.Select(x => new Shipment
+            var shipmentDetails = await _shipmentRepository.GetAll();
+            var result = _mapper.Map<List<Shipment>>(shipmentDetails);
+            return _mapper.Map<List<ShipmentResponseDto>>(result);
+        }
+
+        public async Task<ShipmentResponseDto> GetShipmentById(Guid id)
+        {
+            var shipmentDetials = await _shipmentRepository.GetById(id);
+            var result = _mapper.Map<Shipment>(shipmentDetials);
+            return _mapper.Map<ShipmentResponseDto>(result);
+        }
+
+        public async Task<ShipmentResponseDto> UpdateShipment(Guid id, ShipmentRequestDto shipment)
+        {
+            var existingShipment = await _shipmentRepository.GetById(id);
+            var details = new ShipmentRequestDto
             {
-                Id = x.Id,
-                ShipmentDate = x.ShipmentDate,
-                State = x.State,
-                Address = x.Address,
-                Country = x.Country,
-                City = x.City,
-                ZipCode = x.ZipCode,
-            });
-        }
-
-        public async Task<Shipment> GetShipmentById(Guid id)
-        {
-            var details = await _shipmentRepository.GetShipmentById(id);
-
-            return new Shipment { Id = details.Id, 
-                ShipmentDate = details.ShipmentDate,
-                State = details.State,
-                City = details.City, 
-                ZipCode = details.ZipCode,
-                Address = details.Address 
+                ShipmentDate = DateTime.Now,
+                Address = shipment.Address,
+                State = shipment.State,
+                City = shipment.City,
+                Country = shipment.Country,
+                CustomerId = shipment.CustomerId,
+                ZipCode = shipment.ZipCode
             };
-        }
-
-        public async Task<Shipment> UpdateShipment(Guid id, Shipment shipment)
-        {
-            var existingShipment = await _shipmentRepository.GetShipmentById(id);
-            existingShipment.ShipmentDate = shipment.ShipmentDate;
-            existingShipment.State = shipment.State;
-            existingShipment.City = shipment.City;
-            existingShipment.ZipCode = shipment.ZipCode;
-            existingShipment.Address = shipment.Address;
-            existingShipment.Country = shipment.Country;
-            await _shipmentRepository.UpdateShipment(existingShipment);
-            return shipment;
+            var response = _mapper.Map<Shipment>(details);
+            var result = await _shipmentRepository.Update(response);
+            return _mapper.Map<ShipmentResponseDto>(result);
         }
 
         public async Task DeleteShipment(Guid id)
         {
-            await _shipmentRepository.DeleteShipment(id);
+            await _shipmentRepository.Delete(id);
         }
     }
 }

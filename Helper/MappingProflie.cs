@@ -17,6 +17,10 @@ namespace CornerStore.API.Helper
             CreateMap<ProductResponseDto, Product>().ReverseMap();
             CreateMap<CategoryRequestDto, Category>().ReverseMap();
             CreateMap<CategoryResponseDto, Category>().ReverseMap();
+            CreateMap<OrderRequestDto, Order>().ReverseMap();
+            CreateMap<OrderResponseDto, Order>().ReverseMap();
+            CreateMap<ShipmentRequestDto, Shipment>().ReverseMap();
+            CreateMap<ShipmentResponseDto, Shipment>().ReverseMap();
         }
     }
 }
