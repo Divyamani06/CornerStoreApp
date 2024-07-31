@@ -1,8 +1,14 @@
-﻿using CornerStore.API.Context;
+﻿using CornerStore.API.Authenticaion;
+using CornerStore.API.Context;
 using CornerStore.API.GenericRepository;
 using CornerStore.API.Model;
 using CornerStore.API.Repositories.IRepositories;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace CornerStore.API.Repositories
 {
@@ -15,18 +21,5 @@ namespace CornerStore.API.Repositories
             _context = context;
         }
 
-
-        public async Task<bool> SignIn(string email, string password)
-        {
-            var passwordEncrypt = EncryptPassword(password!);
-
-            var signup = await _context.Customers.FirstOrDefaultAsync(x=>x.Email==email&&x.Password==passwordEncrypt);
-            if(signup == null)
-            {
-                return false;
-            }
-            return true;
-            
-        }
     }
 }

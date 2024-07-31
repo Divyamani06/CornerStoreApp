@@ -4,7 +4,6 @@ using CornerStore.API.Dtos.ResponseDtos;
 using CornerStore.API.Model;
 using CornerStore.API.Repositories.IRepositories;
 using CornerStore.API.Services.IServices;
-using FakeItEasy;
 
 namespace CornerStore.API.Services
 {
@@ -30,13 +29,24 @@ namespace CornerStore.API.Services
             {
                throw new("The quantity requested for Product is out of stock.");
             }
-            var detail = new CartRequestDto
+            var existingCart = await _cartRepository.GetById(cartDto.CustomerId);
+            Cart cart;
+            if (existingCart != null)
             {
-                CustomerId = cartDto.CustomerId,
-                Quantity = cartDto.Quantity,
-                ProductId = cartDto.ProductId
-            };
-            var cart = _mapper.Map<Cart>(detail);
+                // Update the existing cart Quantity
+                existingCart.Quantity += cartDto.Quantity;
+                cart = await _cartRepository.Update(existingCart);
+            }
+            else
+            {
+                var detail = new CartRequestDto
+                {
+                    CustomerId = cartDto.CustomerId,
+                    Quantity = cartDto.Quantity,
+                    ProductId = cartDto.ProductId
+                };
+                cart = _mapper.Map<Cart>(detail);
+            }
             var response = await _cartRepository.AddAsync(cart);
 
             return _mapper.Map<CartResponseDto>(response);

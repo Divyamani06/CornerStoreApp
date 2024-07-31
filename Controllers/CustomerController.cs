@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using CornerStore.API.Dtos.RequestDtos;
 using CornerStore.API.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CornerStore.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CustomerController : ControllerBase
@@ -40,13 +42,6 @@ namespace CornerStore.API.Controllers
             return Ok(customer);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreatCustomer(CustomerRequestDto customer)
-        {
-            var customerDetails = await _customerService.CreatCustomer(customer);
-            return Ok(customerDetails);
-        }
-
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCustomer(Guid id, CustomerRequestDto customer)
         {
@@ -66,15 +61,5 @@ namespace CornerStore.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost("{email},{password}")]
-        public async Task<IActionResult> SignIn(string email, string password)
-        {
-            var result = await _customerService.SignIn(email, password);
-            if(result == false)
-            {
-                return NotFound("Customer not found");
-            }
-            return Ok("Customer sigin succesfully");
-        }
     }
 }

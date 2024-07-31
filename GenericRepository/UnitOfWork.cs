@@ -1,9 +1,5 @@
 ﻿using CornerStore.API.Context;
-using CornerStore.API.Model;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace CornerStore.API.GenericRepository
 {
@@ -53,17 +49,6 @@ namespace CornerStore.API.GenericRepository
         {
             await _context.SaveChangesAsync();
         }
-
-        public string EncryptPassword(string password)
-        {
-            var crypt = new SHA256Managed();
-            var hash = new StringBuilder();
-            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(password));
-            foreach (byte theByte in crypto)
-            {
-                hash.Append(theByte.ToString("x2"));
-            }
-            return hash.ToString();
-        }
+      
     }
 }

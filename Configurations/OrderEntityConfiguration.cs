@@ -12,7 +12,7 @@ namespace CornerStore.API.Configurations
             entity.HasKey(t => t.Id);
             entity.Property(p => p.OrderDate).IsRequired();
 
-            entity.HasMany(h => h.OrderItems).WithOne(x => x.Order).HasForeignKey(x => x.OrderId).IsRequired().OnDelete(DeleteBehavior.Restrict);
+            entity.HasMany(h => h.OrderItems).WithOne(x => x.Order).HasForeignKey(x => x.OrderId).IsRequired();
         }
     }
 }

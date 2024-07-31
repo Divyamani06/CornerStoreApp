@@ -31,12 +31,12 @@ namespace CornerStore.API.Services
             var response = _mapper.Map<Order>(orderDetails);
             var result = await _orderRepository.AddAsync(response);
             return _mapper.Map<OrderResponseDto>(result);
-        }
+         }
 
         public async Task<List<OrderResponseDto>> GetAllOrders()
         {
             var orderDetails = await _orderRepository.GetAll();
-            var result = _mapper.Map<Order>(orderDetails);
+            var result = _mapper.Map<List<Order>>(orderDetails);
             return _mapper.Map<List<OrderResponseDto>>(result);
 
         }

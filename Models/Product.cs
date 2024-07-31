@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CornerStore.API.Model
+﻿namespace CornerStore.API.Model
 {
     public class Product
     {

@@ -1,10 +1,14 @@
-﻿using CornerStore.API.GenericRepository;
+﻿using CornerStore.API.Context;
+using CornerStore.API.GenericRepository;
+using CornerStore.API.Model;
+using CornerStore.API.Models;
 using CornerStore.API.Repositories;
 using CornerStore.API.Repositories.Interfacese;
 using CornerStore.API.Repositories.IRepositories;
 using CornerStore.API.Services;
 using CornerStore.API.Services.Interfacese;
 using CornerStore.API.Services.IServices;
+using Microsoft.AspNetCore.Identity;
 
 namespace CornerStore.API.AddDependencyInjectionServices
 {
@@ -25,6 +29,11 @@ namespace CornerStore.API.AddDependencyInjectionServices
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            // For Identity
+            services.AddIdentity<Customer, CustomerRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             return services;
         }

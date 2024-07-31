@@ -16,7 +16,7 @@ namespace CornerStore.API.Configurations
             entity.Property(p => p.City).HasMaxLength(50);
             entity.Property(p => p.ZipCode).IsRequired();
 
-            entity.HasMany(h => h.Orders).WithOne(x => x.Shipment).HasForeignKey(x => x.ShipmentId).IsRequired().OnDelete(DeleteBehavior.Restrict);
+            entity.HasMany(h => h.Orders).WithOne(x => x.Shipment).HasForeignKey(x => x.ShipmentId).IsRequired();
         }
     }
 }

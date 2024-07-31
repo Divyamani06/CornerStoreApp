@@ -18,24 +18,6 @@ namespace CornerStore.API.Services
             _mapper = mapper;
         }
 
-        public async Task<CustomerResponseDto> CreatCustomer(CustomerRequestDto customerDto)
-        {
-            var password = _customerRepository.EncryptPassword(customerDto.Password);
-            var customerDetails = new CustomerRequestDto
-            {
-                Password = password,
-                FirstName = customerDto.FirstName,
-                LastName = customerDto.LastName,
-                Email = customerDto.Email,
-                Address = customerDto.Address,
-                PhoneNumber = customerDto.PhoneNumber
-            };
-            var customer = _mapper.Map<Customer>(customerDetails);
-            var response = await _customerRepository.AddAsync(customer);
-
-            return _mapper.Map<CustomerResponseDto>(response);
-        }
-
         public async Task<List<CustomerResponseDto>> GetAllCustomer()
         {
             var details = await _customerRepository.GetAll();
@@ -63,11 +45,6 @@ namespace CornerStore.API.Services
         {
            var result = await _customerRepository.Delete(id);
             return result.Id;
-        }
-
-        public async Task<bool> SignIn(string email, string password)
-        {
-            return await _customerRepository.SignIn(email, password);
         }
     }
 }

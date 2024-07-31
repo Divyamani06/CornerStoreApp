@@ -5,7 +5,6 @@ namespace CornerStore.API.GenericRepository
     {
         Task<T> AddAsync(T entity);
         Task<T> Delete(Guid id);
-        string EncryptPassword(string password);
         Task<List<T>> GetAll();
         Task<T> GetById(Guid id);
         Task SaveChanges();

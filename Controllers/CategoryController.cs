@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using CornerStore.API.Dtos.RequestDtos;
-using CornerStore.API.Dtos.ResponseDtos;
-using CornerStore.API.Services;
 using CornerStore.API.Services.Interfacese;
-using CornerStore.API.Services.IServices;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CornerStore.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
