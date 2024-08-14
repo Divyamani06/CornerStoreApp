@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CornerStore.API.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class CustomerController : ControllerBase

@@ -11,15 +11,14 @@ namespace CornerStore.API.Services
     {
         private readonly ICartRepository _cartRepository;
         private readonly IMapper _mapper;
-        private readonly ICustomersRepository _customersRepository;
         private readonly IProductRepository _productRepository;
 
-        public CartService(ICartRepository cartRepository, IMapper mapper,IProductRepository productRepository,ICustomersRepository customersRepository)
+        public CartService(ICartRepository cartRepository, IMapper mapper,IProductRepository productRepository)
         {
             _cartRepository = cartRepository;
             _mapper = mapper;
             _productRepository = productRepository;
-            _customersRepository = customersRepository;
+
         }
 
         public async Task<CartResponseDto> CreatCart(CartRequestDto cartDto)
@@ -55,21 +54,19 @@ namespace CornerStore.API.Services
         public async Task<List<CartResponseDto>> GetAllCart()
         {
             var details = await _cartRepository.GetAll();
-            var result = _mapper.Map<List<Cart>>(details);
-            return _mapper.Map<List<CartResponseDto>>(result);
-        }
+            return _mapper.Map<List<CartResponseDto>>(details);
+          }
 
         public async Task<CartResponseDto> GetByIdCart(Guid id)
         {
             var cart = await _cartRepository.GetById(id);
-            var result = _mapper.Map<Cart>(cart);
-            return _mapper.Map<CartResponseDto>(result);
+            return _mapper.Map<CartResponseDto>(cart);
         }
 
         public async Task<CartResponseDto> UpdateCart(Guid id, CartRequestDto CartRequestDto)
         {
             var existingCart = await _cartRepository.GetById(id);
-            var detail = new Cart
+            var detail = new CartRequestDto
             {
                 CustomerId = existingCart.CustomerId,
                 Quantity = existingCart.Quantity,

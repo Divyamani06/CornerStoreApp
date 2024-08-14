@@ -8,5 +8,7 @@
         public const string UserNotFound = "User not found!.";
         public const string PasswordMismatch = "Password mismatch!";
         public const string UserRoleAssignmentFailed = "User Role Assignment Failed";
+        public const string AdminRoleAlreadyExits= "Admin and User role already exits";
+        public const string UserRoleAlredyExits = "User role already exits";
     }
 }

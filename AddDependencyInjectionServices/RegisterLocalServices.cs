@@ -29,7 +29,9 @@ namespace CornerStore.API.AddDependencyInjectionServices
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IUserAuthService, UserAuthService>();
+            services.AddScoped<IAdminAuthService, AdminAuthService>();
+            services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
             // For Identity
             services.AddIdentity<Customer, CustomerRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
